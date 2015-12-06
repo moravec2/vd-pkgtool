@@ -1,0 +1,153 @@
+#!/usr/bin/bash
+
+#My first gtkdialog program 7/11/15 Moravec
+#Programs needed... gtkdialog, zenity, gksu, gnome-keyring
+#Change TERMP to reflect term program being used
+#Change IEXIT and IINFO to reflect your icon preference
+TERMP=lxterminal
+#Exit icon change to your preference
+IEXIT=/usr/share/icons/gnome/48x48/actions/exit.png
+#Info icon change to your preference
+IINFO=/usr/share/icons/gnome/48x48/actions/help.png
+tmpfile="./pkgtlhlp"
+trap "rm -f $tmpfile" EXIT
+cat << 'EOF' > $tmpfile
+--------------------Commands Used-------------------
+
+ Upgrade:............................xbps-install -Su
+ Purge all kernals:..................vkpurge rm all
+ Hold Package foo Update:............xbps-pkgdb -m hold foo
+ Un_Hold Package foo Update:.........xbps-pkgdb -m unhold foo
+ Installed Packages:.................xbps-query -l
+ Search For Package foo:.............xbps-query -Rs foo
+ Package Info foo:...................xbps-query foo
+ Files In Package foo:...............xbps-query -f foo
+ Install Package foo:................xbps-install foo
+ Install Local Package foo:..........xbps-install -f foo
+ Remove Package foo:.................xbps-remove foo
+
+EOF
+
+
+
+export MAIN_DIALOG='
+<window window_position="1" title="Package Tools">
+<vbox>
+	<frame System Tools>
+	<hbox homogeneous="True">
+		<vbox homogeneous="True">
+			<button>
+				<label>Upgrade</label>
+				<action>gksu "'"$TERMP"' -e xbps-install -Su";if [ "$?" = 0 ]; then zenity --info --text="Upgrade completed successfully";fi</action>
+			</button>
+		</vbox>
+    <vbox homogeneous="True">
+      <button>
+        <label>Purge All</label>
+        <action>gksu "'"$TERMP"' -e vkpurge rm all";if [ "$?" = 0 ]; then zenity --info --text="Upgrade completed successfully";fi</action>
+      </button>
+    </vbox>
+		<vbox homogeneous="True">
+			<entry><variable>SVAR1</variable></entry>
+			<hbox homogeneous="True">
+				<button>
+					<label>Hold Pkg Update</label>
+					<action>gksu "'"$TERMP"' -e xbps-pkgdb -m hold $SVAR1";if [ "$?" = 0 ]; then zenity --info --text="Hold completed successfully";fi</action>
+				</button>
+			</hbox>
+		</vbox>
+		<vbox homogeneous="True">
+			<entry><variable>SVAR2</variable></entry>
+			<hbox homogeneous="True">
+				<button>
+					<label>Un_Hold Pkg Update</label>
+					<action>gksu "'"$TERMP"' -e xbps-pkgdb -m unhold $SVAR2";if [ "$?" = 0 ]; then zenity --info --text="UnHold completed successfully";fi</action>
+				</button>
+			</hbox>
+		</vbox>
+	</hbox>
+	</frame>
+	<frame Query Tools>
+	<hbox homogeneous="True">
+		<vbox homogeneous="True">
+			<button>
+				<label>Installed Pkgs</label>
+				<action>xbps-query -l | zenity --text-info --width=700 --height=500 --title $"Installed Packages"</action>
+			</button>
+		</vbox>
+		<vbox homogeneous="True">
+			<entry><variable>QVAR1</variable></entry>
+			<hbox homogeneous="True">
+				<button>
+					<label>Search For Package</label>
+					<action>xbps-query -Rs $QVAR1 | zenity --text-info --width=700 --height=300 --title $"Found Packages"</action>
+				</button>
+			</hbox>
+		</vbox>
+		<vbox homogeneous="True">
+			<entry><variable>QVAR2</variable></entry>
+			<hbox homogeneous="True">
+				<button>
+					<label>Package Info</label>
+					<action>xbps-query $QVAR2 | zenity --text-info --width=700 --height=300 --title $"Selected Package Info"</action>
+				</button>
+			</hbox>
+		</vbox>
+		<vbox homogeneous="True">
+			<entry><variable>QVAR3</variable></entry>
+			<hbox homogeneous="True">
+				<button>
+					<label>Files In Package</label>
+					<action>xbps-query -f $QVAR3 | zenity --text-info --width=700 --height=300 --title $"Files In Selected Package"</action>
+				</button>
+			</hbox>
+		</vbox>
+	</hbox>
+	</frame>
+	<frame Install Tools>
+	<hbox homogeneous="True">
+		<vbox homogeneous="True">
+			<entry><variable>IVAR1</variable></entry>
+			<hbox homogeneous="True">
+				<button>
+					<label>Install Package</label>
+					<action>gksu "'"$TERMP"' -e xbps-install $IVAR1";if [ "$?" = 0 ]; then zenity --info --text="Install completed successfully";fi</action>
+				</button>
+			</hbox>
+		</vbox>
+		<vbox homogeneous="True">
+			<entry><variable>IVAR2</variable></entry>
+			<hbox homogeneous="True">
+				<button>
+					<label>Install Local Package</label>
+					<action>gksu "'"$TERMP"' -e xbps-install -f $IVAR2";if [ "$?" = 0 ]; then zenity --info --text="Local Install completed successfully";fi</action>
+				</button>
+			</hbox>
+		</vbox>
+		<vbox homogeneous="True">
+			<entry><variable>IVAR3</variable></entry>
+			<hbox homogeneous="True">
+				<button>
+					<label>Remove Package</label>
+					<action>gksu "'"$TERMP"' -e xbps-remove $IVAR3";if [ "$?" = 0 ]; then zenity --info --text="Remove completed successfully";fi</action>
+				</button>
+			</hbox>
+		</vbox>
+	</hbox>
+	</frame>
+	<frame>
+	<hbox homogeneous="True">
+		<button>
+			<input file>'"$IEXIT"'</input>
+			<action type="exit">exit 0</action>
+		</button>
+		<button>
+			<input file>'"$IINFO"'</input>
+			<action>cat '"$tmpfile"' | zenity --text-info --width=500 --height=400 --title $"Command Info"&</action>
+		</button>
+	</hbox>
+	</frame>
+</vbox>
+</window>
+'
+gtkdialog --program=MAIN_DIALOG
