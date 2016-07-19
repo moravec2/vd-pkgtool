@@ -16,6 +16,7 @@ cat << 'EOF' > $tmpfile
 
  Upgrade:............................xbps-install -Su
  Purge all kernals:..................vkpurge rm all
+ Clean up:...........................xbps-remove -Oo
  Hold Package foo Update:............xbps-pkgdb -m hold foo
  Un_Hold Package foo Update:.........xbps-pkgdb -m unhold foo
  Installed Packages:.................xbps-query -l
@@ -38,21 +39,27 @@ export MAIN_DIALOG='
 		<vbox homogeneous="True">
 			<button>
 				<label>Upgrade</label>
-				<action>gksu "'"$TERMP"' -e xbps-install -Su";if [ "$?" = 0 ]; then zenity --info --text="Upgrade completed successfully";fi</action>
+				<action>gksu "'"$TERMP"' -e xbps-install -Su";if [ "$?" -eq 0 ]; then zenity --info --text="Upgrade completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
 			</button>
 		</vbox>
     <vbox homogeneous="True">
       <button>
         <label>Purge All</label>
-        <action>gksu "'"$TERMP"' -e vkpurge rm all";if [ "$?" = 0 ]; then zenity --info --text="Upgrade completed successfully";fi</action>
+        <action>gksu "'"$TERMP"' -e vkpurge rm all";if [ "$?" -eq 0 ]; then zenity --info --text="Upgrade completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
       </button>
     </vbox>
+		<vbox homogeneous="True">
+			<button>
+				<label>CleanUp</label>
+				<action>gksu "'"$TERMP"' -e xbps-remove -Oo";if [ "$?" -eq 0 ]; then zenity --info --text="Clean up completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
+			</button>
+		</vbox>
 		<vbox homogeneous="True">
 			<entry><variable>SVAR1</variable></entry>
 			<hbox homogeneous="True">
 				<button>
 					<label>Hold Pkg Update</label>
-					<action>gksu "'"$TERMP"' -e xbps-pkgdb -m hold $SVAR1";if [ "$?" = 0 ]; then zenity --info --text="Hold completed successfully";fi</action>
+					<action>gksu "'"$TERMP"' -e xbps-pkgdb -m hold $SVAR1";if [ "$?" -eq 0 ]; then zenity --info --text="Hold completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
 				</button>
 			</hbox>
 		</vbox>
@@ -61,7 +68,7 @@ export MAIN_DIALOG='
 			<hbox homogeneous="True">
 				<button>
 					<label>Un_Hold Pkg Update</label>
-					<action>gksu "'"$TERMP"' -e xbps-pkgdb -m unhold $SVAR2";if [ "$?" = 0 ]; then zenity --info --text="UnHold completed successfully";fi</action>
+					<action>gksu "'"$TERMP"' -e xbps-pkgdb -m unhold $SVAR2";if [ "$?" -eq 0 ]; then zenity --info --text="UnHold completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
 				</button>
 			</hbox>
 		</vbox>
@@ -111,7 +118,7 @@ export MAIN_DIALOG='
 			<hbox homogeneous="True">
 				<button>
 					<label>Install Package</label>
-					<action>gksu "'"$TERMP"' -e xbps-install $IVAR1";if [ "$?" = 0 ]; then zenity --info --text="Install completed successfully";fi</action>
+					<action>gksu "'"$TERMP"' -e xbps-install $IVAR1";if [ "$?" -eq 0 ]; then zenity --info --text="Install completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
 				</button>
 			</hbox>
 		</vbox>
@@ -120,7 +127,7 @@ export MAIN_DIALOG='
 			<hbox homogeneous="True">
 				<button>
 					<label>Install Local Package</label>
-					<action>gksu "'"$TERMP"' -e xbps-install -f $IVAR2";if [ "$?" = 0 ]; then zenity --info --text="Local Install completed successfully";fi</action>
+					<action>gksu "'"$TERMP"' -e xbps-install -f $IVAR2";if [ "$?" -eq 0 ]; then zenity --info --text="Local Install completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
 				</button>
 			</hbox>
 		</vbox>
@@ -129,7 +136,7 @@ export MAIN_DIALOG='
 			<hbox homogeneous="True">
 				<button>
 					<label>Remove Package</label>
-					<action>gksu "'"$TERMP"' -e xbps-remove $IVAR3";if [ "$?" = 0 ]; then zenity --info --text="Remove completed successfully";fi</action>
+					<action>gksu "'"$TERMP"' -e xbps-remove $IVAR3";if [ "$?" -eq 0 ]; then zenity --info --text="Remove completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
 				</button>
 			</hbox>
 		</vbox>
