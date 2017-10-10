@@ -39,7 +39,7 @@ export MAIN_DIALOG='
 		<vbox homogeneous="True">
 			<button>
 				<label>Upgrade</label>
-				<action>gksu "'"$TERMP"' -e xbps-install -Su";if [ "$?" -eq 0 ]; then zenity --info --text="Upgrade completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
+				<action>lxterminal --geometry=80x25 --title=Updating -e bash -c "sudo -H xbps-install -Su; echo --Enter to Close Terminal--; read line"</action>
 			</button>
 		</vbox>
     <vbox homogeneous="True">
