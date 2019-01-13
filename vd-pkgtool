@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 #My first gtkdialog program 7/11/15 Moravec
-#Programs needed... gtkdialog, zenity, gksu, gnome-keyring
+#Programs needed... gtkdialog, zenity,gnome-keyring
 #Change TERMP to reflect term program being used
 #Change IEXIT and IINFO to reflect your icon preference
 TERMP=lxterminal
@@ -45,21 +45,21 @@ export MAIN_DIALOG='
     <vbox homogeneous="True">
       <button>
         <label>Purge All</label>
-        <action>gksu "'"$TERMP"' -e vkpurge rm all";if [ "$?" -eq 0 ]; then zenity --info --text="Upgrade completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
+        <action>lxterminal --geometry=80x25 --title=Purging -e bash -c "sudo -H vkpurge rm all; echo --Enter to Close Terminal--; read line"</action>
       </button>
     </vbox>
 		<vbox homogeneous="True">
 			<button>
 				<label>CleanUp</label>
-				<action>gksu "'"$TERMP"' -e xbps-remove -Oo";if [ "$?" -eq 0 ]; then zenity --info --text="Clean up completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
-			</button>
+				<action>lxterminal --geometry=80x25 --title=Cleaning... -e bash -c "sudo -H xbps-remove -Oo; echo --Enter to Close Terminal--; read line"</action>
+  		</button>
 		</vbox>
 		<vbox homogeneous="True">
 			<entry><variable>SVAR1</variable></entry>
 			<hbox homogeneous="True">
 				<button>
 					<label>Hold Pkg Update</label>
-					<action>gksu "'"$TERMP"' -e xbps-pkgdb -m hold $SVAR1";if [ "$?" -eq 0 ]; then zenity --info --text="Hold completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
+					<action>lxterminal --geometry=80x25 --title=Hold_Pkg -e bash -c "sudo -H xbps-pkgdb -m hold $SVAR1; echo --Enter to Close Terminal--; read line"</action>
 				</button>
 			</hbox>
 		</vbox>
@@ -68,7 +68,7 @@ export MAIN_DIALOG='
 			<hbox homogeneous="True">
 				<button>
 					<label>Un_Hold Pkg Update</label>
-					<action>gksu "'"$TERMP"' -e xbps-pkgdb -m unhold $SVAR2";if [ "$?" -eq 0 ]; then zenity --info --text="UnHold completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
+					<action>lxterminal --geometry=80x25 --title=Un_Hold_Pkg -e bash -c "sudo -H xbps-pkgdb -m unhold $SVAR2; echo --Enter to Close Terminal--; read line"</action>
 				</button>
 			</hbox>
 		</vbox>
@@ -118,7 +118,7 @@ export MAIN_DIALOG='
 			<hbox homogeneous="True">
 				<button>
 					<label>Install Package</label>
-					<action>gksu "'"$TERMP"' -e xbps-install $IVAR1";if [ "$?" -eq 0 ]; then zenity --info --text="Install completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
+					<action>lxterminal --geometry=80x25 --title=Install -e bash -c "sudo -H xbps-install $IVAR1;echo --Enter to Close Terminal--; read line"</action>
 				</button>
 			</hbox>
 		</vbox>
@@ -127,7 +127,7 @@ export MAIN_DIALOG='
 			<hbox homogeneous="True">
 				<button>
 					<label>Install Local Package</label>
-					<action>gksu "'"$TERMP"' -e xbps-install -f $IVAR2";if [ "$?" -eq 0 ]; then zenity --info --text="Local Install completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
+					<action>lxterminal --geometry=80x25 --title=Install_Local -e bash -c "sudo -H	 xbps-install -f $IVAR2;echo --Enter to Close Terminal--; read line"</action>
 				</button>
 			</hbox>
 		</vbox>
@@ -136,7 +136,7 @@ export MAIN_DIALOG='
 			<hbox homogeneous="True">
 				<button>
 					<label>Remove Package</label>
-					<action>gksu "'"$TERMP"' -e xbps-remove $IVAR3";if [ "$?" -eq 0 ]; then zenity --info --text="Remove completed successfully";else zenity --info --text="There was an error in the last operation!";fi</action>
+					<action>lxterminal --geometry=80x25 --title=Remove -e bash -c "sudo -H xbps-remove $IVAR3echo --Enter to Close Terminal--; read line"</action>
 				</button>
 			</hbox>
 		</vbox>
