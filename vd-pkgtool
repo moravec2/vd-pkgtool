@@ -15,6 +15,7 @@ cat << 'EOF' > $tmpfile
 --------------------Commands Used-------------------
 
  Upgrade:............................xbps-install -Su
+ Upgrade package eg xbps:............xbps-install -u xbps
  Purge all kernals:..................vkpurge rm all
  Clean up:...........................xbps-remove -Oo
  Hold Package foo Update:............xbps-pkgdb -m hold foo
@@ -136,7 +137,16 @@ export MAIN_DIALOG='
 			<hbox homogeneous="True">
 				<button>
 					<label>Remove Package</label>
-					<action>lxterminal --geometry=80x25 --title=Remove -e bash -c "sudo -H xbps-remove $IVAR3echo --Enter to Close Terminal--; read line"</action>
+					<action>lxterminal --geometry=80x25 --title=Remove -e bash -c "sudo -H xbps-remove $IVAR3;echo --Enter to Close Terminal--; read line"</action>
+				</button>
+			</hbox>
+		</vbox>
+               	<vbox homogeneous="True">
+			<entry><variable>IVAR4</variable></entry>
+			<hbox homogeneous="True">
+				<button>
+					<label>Upgrade Package</label>
+					<action>lxterminal --geometry=80x25 --title=Remove -e bash -c "sudo -H xbps-install -u  $IVAR4;echo --Enter to Close Terminal--; read line"</action>
 				</button>
 			</hbox>
 		</vbox>
